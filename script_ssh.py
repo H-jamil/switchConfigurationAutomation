@@ -1,7 +1,7 @@
 # @Author: jamil
 # @Date:   2021-03-10T14:22:29-06:00
 # @Last modified by:   jamil
-# @Last modified time: 2021-03-10T14:25:54-06:00
+# @Last modified time: 2021-03-24T16:15:53-05:00
 
 
 
@@ -24,16 +24,13 @@ for ip in  network_devices:
     twrssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     twrssh.connect(ip, port=22, username=UN, password=PW)
     remote = twrssh.invoke_shell()
-    remote.send('term len 0\n')
+    #remote.send('term len 0\n')
     time.sleep(1)
     #This for loop allows you to specify number of commands  you want to enter
     #Dependent on the output of the commands you may want to tweak sleep time.
     for command in host_conf:
         remote.send(' %s \n' % command)
-        time.sleep(2)
+        time.sleep(1)
         buf = remote.recv(65000)
-        print (buf)
-        f = open('sshlogfile0001.txt', 'a')
-        f.write(buf)
-        f.close()
+        print (buf.decode('utf-8')) # printing out the command output
     twrssh.close()
